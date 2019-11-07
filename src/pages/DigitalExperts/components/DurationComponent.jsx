@@ -9,16 +9,22 @@ class DurationComponent extends Component {
     this.state = {
       defaultValue,
       max,
-      currentValue: 1,
+      currentValue: 0,
       maxAllowed,
     };
   }
 
+  componentWillUnmount() {
+    const { handleDurationChange, id } = this.props;
+    handleDurationChange({ id, duration: 0 });
+  }
+
   handleDurationChange = e => {
     const { maxAllowed } = this.state;
+    const { handleDurationChange, id } = this.props;
     this.setState({
       currentValue: e <= maxAllowed ? e : maxAllowed,
-    })
+    }, () => handleDurationChange({ id, duration: this.state.currentValue }));
   };
 
   render() {

@@ -42,6 +42,8 @@ class TableForm extends Component {
     this.state = {
       data: [],
       loading: false,
+      minutesSum: 0,
+      durationData: new Map(),
     };
   }
 
@@ -51,7 +53,14 @@ class TableForm extends Component {
         key: 0,
         skills: <SkillComponent />,
         difficulty: <RateComponent count={3} />,
-        duration: <DurationComponent defaultValue={1} min={1} max={60} maxAllowed={30} />,
+        duration: <DurationComponent
+          defaultValue={1}
+          min={1}
+          max={60}
+          maxAllowed={30}
+          handleDurationChange={this.handleDurationChange}
+          id={0}
+        />,
         toggle: (
           <ToggleRowComponent
             toggle="add"
@@ -68,6 +77,26 @@ class TableForm extends Component {
     });
   }
 
+  handleDurationChange = durationObject => {
+    const { durationData } = this.state;
+    const { id, duration } = durationObject;
+    durationData.set(id, duration);
+    this.setState({
+      durationData,
+    }, () => this.calculateDurationSum());
+  };
+
+  calculateDurationSum = () => {
+    const { durationData } = this.state;
+    let sum = 0;
+    durationData.forEach(value => {
+      sum += value;
+    });
+    this.setState({
+      minutesSum: sum,
+    });
+  };
+
   newRow = () => {
     const { data = [] } = this.state;
     const newData = data.map(item => ({
@@ -79,7 +108,14 @@ class TableForm extends Component {
       key: this.index,
       skills: <SkillComponent />,
       difficulty: <RateComponent count={3} />,
-      duration: <DurationComponent defaultValue={1} min={1} max={60} maxAllowed={30} />,
+      duration: <DurationComponent
+        defaultValue={1}
+        min={1}
+        max={60}
+        maxAllowed={30}
+        handleDurationChange={this.handleDurationChange}
+        id={this.index}
+      />,
       toggle: (
         <ToggleRowComponent
           toggle="add"
@@ -106,14 +142,14 @@ class TableForm extends Component {
   };
 
   render() {
-    const { loading, data } = this.state;
+    const { loading, data, minutesSum } = this.state;
     return (
       <Table
         loading={loading}
         columns={this.columns}
         dataSource={data}
         pagination={false}
-        footer={() => <TableFooter />}
+        footer={() => <TableFooter minutes={minutesSum} />}
         className="tableForm"
       />
     );

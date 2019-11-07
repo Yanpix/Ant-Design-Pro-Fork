@@ -1,4 +1,4 @@
 import React from 'react';
 
-const TableFooter = () => <div className="tableFooter">Total n min</div>;
+const TableFooter = ({ minutes = 0 }) => <div className="tableFooter">Total {minutes} min</div>;
 export default TableFooter;
