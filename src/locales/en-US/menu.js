@@ -10,6 +10,7 @@ export default {
   'menu.dashboard.analysis': 'Analysis',
   'menu.dashboard.monitor': 'Monitor',
   'menu.dashboard.workplace': 'Workplace',
+  'menu.digitalexperts': 'Digital Experts',
   'menu.exception.403': '403',
   'menu.exception.404': '404',
   'menu.exception.500': '500',

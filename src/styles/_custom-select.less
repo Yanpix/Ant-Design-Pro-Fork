@@ -1,0 +1,19 @@
+.custom-select {
+  &::after {
+    position: absolute;
+    top: 1px;
+    right: 35px;
+    width: 1px;
+    height: calc(100% - 2px);
+    background-color: @border-color;
+    content: '';
+  }
+
+  svg {
+    fill: @main-color-dark;
+  }
+
+  .ant-select-selection--single .ant-select-selection__rendered {
+    margin-right: 38px;
+  }
+}

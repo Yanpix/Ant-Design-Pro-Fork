@@ -1,0 +1,41 @@
+
+.genderButton {
+  width: 120px;
+  color: @main-color-dark;
+  font-weight: bold;
+  border-color: @main-color-dark;
+  &:first-child {
+    border-color: @main-color-dark;
+  }
+
+  span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+  }
+}
+
+.genderButton.ant-radio-button-wrapper-checked {
+  background: orange;
+}
+
+.genderButton:hover {
+  color: @main-color-dark;
+}
+
+.genderIcons, .genderIconsSelected {
+  svg {
+    width: 25px;
+    height: 25px;
+    transition: all .4s;
+  }
+}
+
+.genderIcons {
+  fill: @main-color-dark;
+}
+
+.genderIconsSelected {
+  fill: #fff;
+}
