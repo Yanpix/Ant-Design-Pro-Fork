@@ -1,17 +1,11 @@
-import { Button, Table } from 'antd';
+import { Table } from 'antd';
 import React, { Component } from 'react';
 import SkillComponent from './SkillComponent';
 import RateComponent from './RateComponent';
 import DurationComponent from './DurationComponent';
 import TableFooter from './TableFooter';
+import ToggleRowComponent from './ToggleRowComponent';
 
-const ToggleRowComponent = ({ toggle, removeRow, newRow = () => {}, idx }) => (
-    <span>
-      { toggle === 'remove' ?
-        <Button icon="close" className="removeBtn" onClick={removeRow(idx)}/> :
-        <Button icon="plus" onClick={newRow}/>
-      }
-    </span>);
 
 class TableForm extends Component {
   index = 1;
@@ -58,7 +52,14 @@ class TableForm extends Component {
         skills: <SkillComponent />,
         difficulty: <RateComponent count={3} />,
         duration: <DurationComponent defaultValue={1} min={1} max={60} maxAllowed={30} />,
-        toggle: <ToggleRowComponent toggle="add" idx={0} removeRow={this.removeRow} newRow={this.newRow}/>,
+        toggle: (
+          <ToggleRowComponent
+            toggle="add"
+            idx={0}
+            removeRow={this.removeRow}
+            newRow={this.newRow}
+          />
+        ),
         editable: true,
       },
     ];
@@ -69,13 +70,24 @@ class TableForm extends Component {
 
   newRow = () => {
     const { data = [] } = this.state;
-    const newData = data.map((item, i ) => ({ ...item, toggle: <ToggleRowComponent toggle="remove" removeRow={ () => this.removeRow} idx={i}/> }));
+    const newData = data.map(item => ({
+      ...item,
+      toggle: <ToggleRowComponent toggle="remove" removeRow={() => this.removeRow(item.key)} idx={item.key} />,
+    }));
+
     newData.push({
       key: this.index,
       skills: <SkillComponent />,
       difficulty: <RateComponent count={3} />,
-      duration: <DurationComponent defaultValue={1} min={1} max={60} maxAllowed={30}/>,
-      toggle: <ToggleRowComponent toggle="add" idx={this.index} removeRow={this.removeRow} newRow={this.newRow}/>,
+      duration: <DurationComponent defaultValue={1} min={1} max={60} maxAllowed={30} />,
+      toggle: (
+        <ToggleRowComponent
+          toggle="add"
+          idx={this.index}
+          removeRow={this.removeRow}
+          newRow={this.newRow}
+        />
+      ),
       editable: true,
       isNew: true,
     });
@@ -85,7 +97,7 @@ class TableForm extends Component {
     });
   };
 
-  removeRow = (idx) => {
+  removeRow = idx => {
     const { data = [] } = this.state;
     const newData = data.filter(item => item.key !== idx);
     this.setState({
